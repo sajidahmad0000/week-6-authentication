@@ -85,6 +85,21 @@ app.get("/", function (req, res) {
   res.json(users);
 });
 
+app.get("/me", function (req, res) {
+  const token = req.headers.authorization;
+  const user = users.find((item) => item.token === token);
+
+  if (token) {
+    res.json({
+      username: user.username,
+    });
+  } else {
+    res.json({
+      msg: "you are not authenticated",
+    });
+  }
+});
+
 app.post("/signup", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
