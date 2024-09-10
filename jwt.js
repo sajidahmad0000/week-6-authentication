@@ -48,6 +48,7 @@ app.post("/signin", function (req, res) {
       },
       JWT_SECRET
     );
+    console.log(token); //! this just return you token
     res.json({ msg: "You are successfully signed In ", token: token });
   } else {
     res.json({ msg: "Invalid credentials" });
@@ -58,7 +59,7 @@ app.get("/me", function (req, res) {
   const token = req.headers.authorization;
 
   const decodedToken = jwt.verify(token, JWT_SECRET); //! bcz this return an object wher username was encoded
-  console.log(decodedToken);
+  console.log(decodedToken); //!{ username: 'sajidabc', iat: 1725994962 }
   const username = decodedToken.username;
   const userObject = users.find((user) => user.username === username);
   res.json(userObject);
