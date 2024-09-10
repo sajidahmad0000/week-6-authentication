@@ -112,14 +112,17 @@ app.post("/signin", function (req, res) {
   const founduser = users.find(
     (u) => u.username === username && u.password === password
   );
+  console.log(founduser);
   if (founduser) {
     const generatedtoken = generateToken(16);
+
+    founduser.token = generatedtoken;
     res.json({
       msg: "you are successfully signed in",
       token: generatedtoken,
     });
   } else {
-    res.json({ msg: "Invalid credentials" });
+    res.json("Invalid credentials");
   }
 });
 
