@@ -6,11 +6,15 @@ const app = express();
 app.use(express.json());
 let users = [];
 
-app.get("/", function (req, res) {
+function logger(req, res, next) {
+  console.log(`${req.method} REQUEST : and the route they hit is : ${req.url}`);
+  next();
+}
+app.get("/", logger, function (req, res) {
   res.json(users);
 });
 
-app.post("/signup", function (req, res) {
+app.post("/signup", logger, function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -27,7 +31,7 @@ app.post("/signup", function (req, res) {
   }
 });
 
-app.post("/signin", function (req, res) {
+app.post("/signin", logger, function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -49,15 +53,6 @@ app.post("/signin", function (req, res) {
   }
 });
 
-// app.get("/me", authMiddleware, function (req, res) {
-//   const username = req.username;
-//   const founduser = users.find((user) => user.username === username);
-//   if (founduser) {
-//     res.json({ founduser });
-//   } else {
-//     res.json("did not found");
-//   }
-// });
 function auth(req, res, next) {
   // Get the token from the request headers
   const token = req.headers.authorization;
@@ -81,7 +76,7 @@ function auth(req, res, next) {
   }
 }
 
-app.get("/me", auth, function (req, res) {
+app.get("/me", logger, auth, function (req, res) {
   const founduser = users.find((user) => user.username === req.username);
   console.log(founduser);
 
