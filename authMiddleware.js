@@ -10,7 +10,10 @@ function logger(req, res, next) {
   console.log(`${req.method} REQUEST : and the route they hit is : ${req.url}`);
   next();
 }
-app.get("/", logger, function (req, res) {
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/public/index.html");
+});
+app.get("/all-users", logger, function (req, res) {
   res.json(users);
 });
 
